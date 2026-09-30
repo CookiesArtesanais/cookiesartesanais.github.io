@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cookies Artesanais 🍪</title>
-<link rel="icon" href="img/icon.png">
-<link rel="apple-touch-icon" href="img/icon.png">
+<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
 <style>
 body{margin:0;font-family:system-ui,sans-serif;background:#f6f0e4;color:#3b2314;text-align:center}
 header{padding:0 0 10px} 
@@ -22,7 +22,7 @@ h1{margin:16px 0 6px;font-size:1.6rem}
 </head>
 <body>
 <header>
-  <img src="img/logo.jpg" alt="Logo">
+  <img src="logo.jpg" alt="Logo">
   <h1>Cookies Artesanais</h1>
   <div class="info">Feitos com amor, pra deixar seu dia mais doce 🐞</div>
   <div class="info"><b>Pedidos às quintas-feiras · Entregas às sextas-feiras</b></div>
@@ -32,9 +32,9 @@ h1{margin:16px 0 6px;font-size:1.6rem}
 <a id="zap" class="btn" target="_blank" rel="noopener">💬 Fazer pedido no WhatsApp</a>
 <script>
 const ZAP="555100000000";
-const M=[["Kinder Bueno","kinder",9,"Creme de Kinder Bueno + pedaços de chocolate ao leite + cobertura Kinder Bueno (~100g)"],["Ovomaltine","ovomaltine",8,"Creme de Ovomaltine + pedaços de chocolate ao leite + pitada de Ovomaltine (~100g)"],["Creme de Avelã","avela",7,"Creme de Avelã + pedaços de chocolate ao leite (~100g)"],["Brigadeiro de Ninho","ninho",7,"Creme de brigadeiro de Ninho + pedaços de chocolate ao leite (~100g)"],["Creme de Avelã Sem Glúten","avelasemgluten",null,"Cookie de Creme de Avelã + pedaços de chocolate ao leite, (~100g)"]];
+const M=[["Kinder Bueno","kinder",9,"Creme de Kinder Bueno + pedaços de chocolate ao leite + cobertura Kinder Bueno (~100g)"],["Ovomaltine","ovomaltine",8,"Creme de Ovomaltine + pedaços de chocolate ao leite + pitada de Ovomaltine (~100g)"],["Creme de Avelã","avela",7,"Creme de Avelã + pedaços de chocolate ao leite (~100g)"],["Brigadeiro de Ninho","ninho",7,"Creme de Brigadeiro de Ninho + pedaços de chocolate ao leite (~100g)"],["Creme de Avelã Sem Glúten","avelasemgluten",null,"Cookie de Creme de Avelã + pedaços de chocolate ao leite, (~100g)"]];
 const rs=v=>"R$ "+v.toFixed(2).replace(".",",");
-g.innerHTML=M.map(m=>`<div class="c"><img src="img/${m[1]}.jpg" alt="${m[0]}"><h3>${m[0]}</h3><small>${m[3]}</small>${m[2]==null?'<div class="p" style="font-size:1.05rem">Consulte disponibilidade</div>':`<div class="p">${rs(m[2])} /un</div>`}</div>`).join("");
+g.innerHTML=M.map(m=>`<div class="c"><img src="${m[1]}.jpg" alt="${m[0]}"><h3>${m[0]}</h3><small>${m[3]}</small>${m[2]==null?'<div class="p" style="font-size:1.05rem">Consulte disponibilidade</div>':`<div class="p">${rs(m[2])} /un</div>`}</div>`).join("");
 zap.href="https://wa.me/"+ZAP+"?text="+encodeURIComponent("Olá! Quero fazer um pedido de cookies 🍪");
 fetch("aviso.json?"+Date.now()).then(r=>r.json()).then(a=>{
  if(a.aviso){aviso.textContent=a.aviso;aviso.style.display="block"}
