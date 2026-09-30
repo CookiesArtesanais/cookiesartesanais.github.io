@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cartaz QR</title>
+<style>body{margin:0;background:#f6f0e4;font-family:system-ui,sans-serif;text-align:center;color:#3b2314}img{max-width:100%;height:auto}p{margin:10px 16px;font-size:.9rem}</style></head><body>
+<p>Toque e segure a imagem para salvar nas Fotos. Para mostrar ao cliente, abra em tela cheia. O QR leva ao endereço deste site.</p>
+<canvas id="c" width="1080" height="1440" style="display:none"></canvas><img id="o" alt="Cartaz com QR Code">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+const url=location.href.replace(/cartaz\.html.*$/,"");
+const L=n=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src="img/"+n+".jpg"});
+(async()=>{
+const [lg,...ims]=await Promise.all(["logo","kinder","ovomaltine","avela","ninho","avelasemgluten"].map(L));
+const c=document.getElementById("c"),x=c.getContext("2d");
+x.fillStyle="#f6f0e4";x.fillRect(0,0,1080,1440);
+if(lg){const h=470;x.drawImage(lg,540-h*lg.width/lg.height/2,10,h*lg.width/lg.height,h)}
+x.textAlign="center";x.fillStyle="#d62828";x.font="bold 58px system-ui,sans-serif";x.fillText("Peça já os seus cookies!",540,545);
+const im=ims.filter(Boolean),H=300,w=im.map(i=>H*i.width/i.height),gap=20;
+let X=(1080-w.reduce((a,b)=>a+b,0)-gap*(im.length-1))/2;
+im.forEach((i,k)=>{x.drawImage(i,X,580,w[k],H);X+=w[k]+gap});
+const q=qrcode(0,"M");q.addData(url);q.make();
+const m=q.getModuleCount(),s=Math.floor(380/m),o=(420-s*m)/2;
+x.fillStyle="#fff";x.fillRect(330,910,420,420);x.fillStyle="#3b2314";
+for(let r=0;r<m;r++)for(let k=0;k<m;k++)if(q.isDark(r,k))x.fillRect(330+o+k*s,910+o+r*s,s,s);
+x.fillStyle="#3b2314";x.font="bold 42px system-ui,sans-serif";x.fillText("Aponte a câmera e veja o cardápio",540,1372);
+x.font="34px system-ui,sans-serif";x.fillText("Pedidos às quintas · Entregas às sextas",540,1420);
+document.getElementById("o").src=c.toDataURL("image/png");
+})();
+</script></body></html>
