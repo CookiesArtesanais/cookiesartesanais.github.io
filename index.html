@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cookies Artesanais 🍪</title>
+<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<style>
+body{margin:0;font-family:system-ui,sans-serif;background:#f6f0e4;color:#3b2314;text-align:center}
+header{padding:0 0 10px} 
+header img{width:100%;max-width:100%;height:auto;display:block}
+h1{margin:16px 0 6px;font-size:1.6rem}
+#aviso{display:none;background:#d62828;color:#fff;padding:14px;margin:12px;border-radius:12px;font-weight:600}
+.info{font-size:.95rem;margin:4px 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;padding:14px;max-width:960px;margin:auto}
+.c{background:#fff;border-radius:16px;padding:10px;box-shadow:0 2px 8px #0002}.c img{width:100%;height:260px;object-fit:contain}
+.p{font-size:1.4rem;font-weight:700;color:#d62828}.c small{display:block}
+.btn{display:inline-block;background:#25d366;color:#fff;font-weight:700;padding:14px 26px;border-radius:30px;text-decoration:none;margin:18px}
+.btn.off{background:#999;pointer-events:none}
+/* Estilo para ajustar a exibição do QR Code */
+.qrcode-pix{max-width:260px;width:100%;height:auto;display:block;margin:10px auto 14px;border-radius:12px;box-shadow:0 2px 8px #0002}
+/* Botão PIX Copia e Cola */
+.btn-pix{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:#32bcad;color:#fff;font-family:inherit;font-size:1rem;font-weight:700;padding:14px 26px;border:0;border-radius:30px;cursor:pointer;margin:0 18px 30px;box-shadow:0 2px 8px #0002;-webkit-tap-highlight-color:transparent}
+.btn-pix:active{transform:scale(.97)}
+.btn-pix svg{width:20px;height:20px;flex:none}
+.btn-pix.ok{background:#1f8f4e}
+</style>
+</head>
+<body>
+<header>
+  <img src="logo.jpg" alt="Logo">
+  <h1>Cookies Artesanais</h1>
+  <div class="info">Feitos com amor, pra deixar seu dia mais doce 🐞</div>
+  <div id="pausa" class="info" style="display:none;color:#d62828;font-size:1.12rem"><b>⚠️ Pedidos pausados nesta semana. ⚠️</b></div>
+  <div class="info"><b>Pedidos até às 19 horas da quinta feira. Entrega na sexta-feira em Torres, local a combinar.</b></div>
+</header>
+<div class="grid" id="g"></div>
+<a id="zap" class="btn" target="_blank" rel="noopener">💬 Fazer pedido no WhatsApp</a>
+
+<!-- Imagem do QR Code adicionada logo abaixo do botão -->
+<img src="qrcode.jpg" alt="Pix QR Code" class="qrcode-pix">
+
+<!-- Botão PIX Copia e Cola: copia o código para a área de transferência -->
+<button type="button" id="pixCopia" class="btn-pix" aria-live="polite">
+  <span id="pixTxt">PIX COPIA E COLA</span>
+  <svg id="pixIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+</button>
+
+<script>
+const ZAP="555198330025";
+const M=[["Raffaello","raffaello",8,"Cookie com pedaços de chocolate branco e recheio de Creme de Raffaello (~100g)"],["Kinder Bueno","kinder",9,"Cookie com pedaços de chocolate ao leite, recheio de Creme de Kinder Bueno e pedaço de Kinder Bueno (~100g)"],["Ovomaltine","ovomaltine",8,"Cookie com pedaços de chocolate ao leite e recheio de Creme de Ovomaltine (~100g)"],["Creme de Avelã","avela",7,"Cookie com pedaços de chocolate ao leite e recheio de Creme de Avelã (~100g)"],["Brigadeiro de Ninho","ninho",7,"Cookie com pedaços de chocolate ao leite e chocolate branco e recheio de Brigadeiro caseiro de Leite Ninho (~100g)"],["Creme de Avelã (SEM GLÚTEN)","avelasemgluten",null,"Cookie com pedaços de chocolate ao leite e recheio de Creme de Avelã (~100g)"]];
+const rs=v=>"R$ "+v.toFixed(2).replace(".",",");
+g.innerHTML=M.map(m=>`<div class="c"><img src="${m[1]}.jpg" alt="${m[0]}"><h3>${m[0]}</h3><small>${m[3]}</small>${m[2]==null?'<div class="p" style="font-size:1.05rem">Consulte disponibilidade</div>':`<div class="p">${rs(m[2])} /un</div>`}</div>`).join("");
+zap.href="https://wa.me/"+ZAP+"?text="+encodeURIComponent("Olá! Quero fazer um pedido de cookies 🍪");
+const FB={p:"cookies-artesanais",k:"AIzaSyDnHbjUCg6CgE9OD4ZGoYoldtldEipIksI"};
+function pausar(on){
+ pausa.style.display=on?"block":"none";
+ zap.classList.toggle("off",on);
+ zap.textContent=on?"Pedidos pausados nesta semana":"💬 Fazer pedido no WhatsApp";
+}
+fetch(`https://firestore.googleapis.com/v1/projects/${FB.p}/databases/(default)/documents/publico/aviso?key=${FB.k}&t=${Date.now()}`,{cache:"no-store"})
+ .then(r=>r.ok?r.json():null)
+ .then(d=>pausar(!!(d&&d.fields&&d.fields.pausado&&d.fields.pausado.booleanValue===true)))
+ .catch(()=>{});
+</script>
+<script>
+(function(){
+  var PIX="00020126770014br.gov.bcb.pix01364b686141-12c5-4bba-a788-47b30a04259d0215Cookies_da_Jojo5204000053039865802BR5918JOANA_BORGES_SILVA6006TORRES622905256HSGJwnC73wjXo7cmNhJsXG6m6304596E";
+  var btn=document.getElementById('pixCopia'),txt=document.getElementById('pixTxt');
+  function copiaAntigo(){ // alternativa para navegadores sem a API de área de transferência (ex.: iPhone/Safari antigo, páginas sem HTTPS)
+    var t=document.createElement('textarea');
+    t.value=PIX;t.setAttribute('readonly','');
+    t.style.cssText='position:fixed;top:0;left:0;opacity:0;font-size:16px';
+    document.body.appendChild(t);t.focus();t.select();t.setSelectionRange(0,PIX.length);
+    var ok=false;try{ok=document.execCommand('copy');}catch(e){}
+    document.body.removeChild(t);
+    return ok;
+  }
+  function aviso(ok){
+    txt.textContent=ok?'CÓDIGO COPIADO!':'COPIE MANUALMENTE';
+    btn.classList.toggle('ok',ok);
+    if(!ok)window.prompt('Copie o código PIX:',PIX);
+    clearTimeout(aviso.t);
+    aviso.t=setTimeout(function(){txt.textContent='PIX COPIA E COLA';btn.classList.remove('ok');},2500);
+  }
+  btn.addEventListener('click',function(){
+    if(navigator.clipboard&&window.isSecureContext){
+      navigator.clipboard.writeText(PIX).then(function(){aviso(true);},function(){aviso(copiaAntigo());});
+    }else{aviso(copiaAntigo());}
+  });
+})();
+</script>
+</body>
+</html>
+
